@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";
 import { SessionProvider } from "next-auth/react";
+import StoreProvider from "./StoreProvider";
+
 import { auth } from "@/auth";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         <Suspense>
-          <SessionProvider session={session}>{children}</SessionProvider>
+          <SessionProvider session={session}>
+            <StoreProvider>{children}</StoreProvider>
+          </SessionProvider>
 
           <Toaster />
         </Suspense>

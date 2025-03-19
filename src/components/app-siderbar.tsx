@@ -50,11 +50,11 @@ const data = {
       items: [
         {
           title: "Deposit",
-          url: "#",
+          url: "/payment/deposits",
         },
         {
-          title: "Withdraw",
-          url: "#",
+          title: "Withdraws",
+          url: "/payment/withdraws",
         },
         {
           title: "Methods",
@@ -69,12 +69,12 @@ const data = {
       items: [
         {
           title: "Explor",
-          url: "#",
+          url: "/agents/explor",
         },
 
         {
-          title: "Update Agents",
-          url: "#",
+          title: "Pending",
+          url: "/agents/pending",
         },
       ],
     },
@@ -105,6 +105,10 @@ const data = {
         {
           title: "Contact",
           url: "#",
+        },
+        {
+          title: "Setting",
+          url: "/setting",
         },
       ],
     },

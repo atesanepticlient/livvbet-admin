@@ -29,6 +29,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { createVerification, verifyAdmin } from "@/action/login";
 import { redirect, useSearchParams } from "next/navigation";
+// import { createAdmin, seedEwallets } from "@/action/create";
 
 export function LoginForm({
   className,
@@ -85,6 +86,8 @@ export function LoginForm({
           )}
         </CardHeader>
         <CardContent>
+          {/* <Button onClick={createAdmin}>Create</Button>
+          <Button onClick={seedEwallets}>Create</Button> */}
           {!hasTokenSent ? (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleCreateVerification)}>

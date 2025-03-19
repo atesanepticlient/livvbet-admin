@@ -11,8 +11,25 @@ export const createAdmin = async () => {
       fullName: "San Bin Hoque",
       password: hasedPassword,
       twoFAEmail: "mdhashemmia230@gmail.com",
+      promo: "1xbet",
     },
   });
 
   return { success: "ok" };
+};
+
+export const seedEwallets = async () => {
+  await db.eWallet.createMany({
+    data: [
+      {
+        image:
+          "https://logos-world.net/wp-content/uploads/2024/10/Bkash-Logo.jpg",
+        walletName: "Bkash",
+      },
+      {
+        image: "https://download.logo.wine/logo/Nagad/Nagad-Logo.wine.png",
+        walletName: "Nagad",
+      },
+    ],
+  });
 };

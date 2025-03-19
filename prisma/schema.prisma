@@ -18,6 +18,7 @@ enum UserReference {
   ADMIN
   AGENT
 }
+
 model Users {
   id                  String @id @default(cuid())
   email               String @unique
@@ -27,11 +28,18 @@ model Users {
   playerId            String @unique
   role                UserRole @default(USER)
   password            String
+  casinoPassword      String
+  refererType         String
+  refererId           String
   isBanned            Boolean @default(false)
   isNewUser           Boolean @default(true)
   createdAt           DateTime @default(now())
   getBouns            Boolean @default(false)         
   wallet              wallet?
+  deposits            Deposit[]
+  withdraws           Withdraw[]
+  histories           PaymentHistory[]
+  messages            Message[]
   @@unique([email,playerId])
 }
 model wallet {
@@ -50,7 +58,9 @@ model admin {
   twoFAEmail          String
   fullName            String
   password            String
+  promo               String
   createdAt           DateTime @default(now())
+  eWallet             AdEWallet[]
 }
 model agent {
   id                  String @id @default(cuid())
@@ -61,9 +71,10 @@ model agent {
   documents           String
   isVerified          Boolean @default(false)
   isEmailVerified     Boolean @default(false)
+  promo               String
   createdAt           DateTime @default(now())
   agent               agentWallet?
-
+  eWallet             AgEWallet[]
 
 }
 model agentWallet {
@@ -79,4 +90,108 @@ model adminEmailVerificationToken {
   id                  String @id @default(cuid())
   token               String
   expire              DateTime
+
+}
+
+
+
+
+model eWallet{
+  id                  String @id @default(cuid())
+  walletName          String
+  image               String
+  agents              AgEWallet?
+  admin               AdEWallet?
+}
+
+model AgEWallet{
+  id                  String @id @default(cuid())
+  deposit             Json
+  withdraw            Json
+  eWalletId           String @unique
+  eWallet             eWallet @relation(fields: [eWalletId], references: [id])
+  isRecommended       Boolean
+  isActive            Boolean
+  agentId             String 
+  agent               agent @relation(fields: [agentId], references: [id])
+}
+
+model AdEWallet{
+  id                  String @id @default(cuid())
+  deposit             Json
+  withdraw            Json
+  eWalletId           String @unique
+  eWallet             eWallet @relation(fields: [eWalletId], references: [id])
+  isRecommended       Boolean
+  isActive            Boolean
+  adminId             String 
+  admin               admin @relation(fields: [adminId], references: [id])
+}
+
+enum PaymentStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Deposit{
+  id                  String @id @default(cuid())
+  payTo               String
+  payFrom             String
+  amount              Int
+  transactionId       String
+  methodName          String
+  status              PaymentStatus @default(PENDING)
+  userId              String
+  user                Users @relation(fields: [userId], references: [id])
+  transactions        PaymentHistory?
+  createdAt           DateTime @default(now())
+}
+
+model Withdraw{
+  id                  String @id @default(cuid())
+  payTo               String
+  amount              Int
+  methodName          String
+  status              PaymentStatus @default(PENDING)
+  userId              String
+  user                Users @relation(fields: [userId], references: [id])
+  createdAt           DateTime @default(now())
+  transactions        PaymentHistory?
+}
+
+enum PaymentHistoryStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+enum PaymentHistoryType {
+  DEPOSIT
+  WITHDRAW
+}
+
+
+model PaymentHistory {
+  id                  String @id @default(cuid())
+  amount              Int?
+  type                PaymentHistoryType
+  status              PaymentHistoryStatus @default(PENDING)
+  createdAt           DateTime @default(now())
+  userId              String
+  user                Users @relation(fields: [userId], references: [id])
+  depositId           String? @unique
+  deposit             Deposit? @relation(fields: [depositId], references: [id])
+  withdrawId          String? @unique
+  withdraw            Withdraw? @relation(fields: [withdrawId], references: [id])
+}
+
+
+model Message {
+  id                  String @id @default(cuid())
+  title               String
+  description         String?
+  seen                Boolean @default(false)
+  createdAt           DateTime @default(now())
+  userId              String
+  user                Users @relation(fields: [userId], references: [id])
 }
