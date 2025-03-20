@@ -4,6 +4,7 @@ import AgentInfo from "./agent-info";
 import AgentWallet from "./agent-wallet";
 import { useFetchAgentQuery } from "@/lib/features/agentApiSlice";
 import { useParams } from "next/navigation";
+import { FadeLoader } from "react-spinners";
 
 const SingleAgent = () => {
   const { id } = useParams();
@@ -17,6 +18,11 @@ const SingleAgent = () => {
           <AgentWallet data={data.payload.agent!} agentVerified={data.payload.isVerified} />
         </div>
       )}
+
+      {!data || isLoading && <FadeLoader
+                  color="#fff"
+                  className="w-8 h-8 mx-auto py-5"
+                ></FadeLoader>}
     </div>
   );
 };

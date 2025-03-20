@@ -1,21 +1,20 @@
 "use client";
 
 import * as React from "react";
-import { House, LogOut, CircleDollarSign } from "lucide-react";
+import { CircleDollarSign } from "lucide-react";
 import { MdOutlineSupportAgent, MdBusinessCenter } from "react-icons/md";
 import { IoIosGift } from "react-icons/io";
 import { FaUsers } from "react-icons/fa6";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { redirect } from "next/navigation";
+
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 // This is sample data.
 const data = {
@@ -24,23 +23,7 @@ const data = {
     email: "epti060@gmail.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  shortNavigation: [
-    {
-      action: () => redirect("/"),
-      label: "Home",
-      icon: House,
-    },
-    {
-      action: () => redirect("/"),
-      label: "Home",
-      icon: House,
-    },
-    {
-      action: () => redirect("/"),
-      label: "Logout",
-      icon: LogOut,
-    },
-  ],
+  shortNavigation: [],
   navMain: [
     {
       title: "Payment",
@@ -58,7 +41,7 @@ const data = {
         },
         {
           title: "Methods",
-          url: "#",
+          url: "/payment/methods",
         },
       ],
     },
@@ -85,7 +68,7 @@ const data = {
       items: [
         {
           title: "Exlpor",
-          url: "#",
+          url: "/users/expor",
         },
         {
           title: "Update Users",
@@ -104,7 +87,7 @@ const data = {
         },
         {
           title: "Contact",
-          url: "#",
+          url: "/contact",
         },
         {
           title: "Setting",
@@ -119,11 +102,11 @@ const data = {
       items: [
         {
           title: "Promo Codes",
-          url: "#",
+          url: "/promo",
         },
         {
           title: "Bonus",
-          url: "#",
+          url: "/bonus",
         },
       ],
     },
@@ -131,16 +114,20 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const admin = useCurrentUser();
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher navigations={data.shortNavigation} />
-      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser
+          user={{
+            name: "MD Hashem Mia",
+            email: admin!.email,
+            avatar: "/avatars/shadcn.jpg",
+          }}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

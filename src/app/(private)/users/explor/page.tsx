@@ -4,6 +4,7 @@ import React from "react";
 import UsersStatistics from "./user-statistics";
 import UsersTable from "./users-table";
 import UsersFilter from "./users-filter";
+import { FadeLoader } from "react-spinners";
 
 const UserExplor = () => {
   const { data, isLoading } = useFetchUsersQuery({ search: "" });
@@ -20,6 +21,9 @@ const UserExplor = () => {
           <UsersTable users={data.payload.users} />
         </>
       )}
+      {(!data || isLoading) && (
+              <FadeLoader color="#fff" className="w-8 h-8 mx-auto py-5"></FadeLoader>
+            )}
     </div>
   );
 };

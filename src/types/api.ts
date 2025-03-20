@@ -74,3 +74,13 @@ export interface StatisticsDataOutput {
     message: string;
   }[];
 }
+
+export interface ContactUpdateInput {
+  facebook?: string;
+  telegram?: string;
+  email?: string;
+}
+
+export interface PromoUpdateInput {
+  promo: string;
+}

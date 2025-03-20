@@ -3,6 +3,7 @@ import React from "react";
 import AgentsStatistics from "./agents-statistics";
 import { useFetchAgentsQuery } from "@/lib/features/agentApiSlice";
 import AgentsTable from "./agents-table";
+import { FadeLoader } from "react-spinners";
 
 const AgentExplor = () => {
   const { data, isLoading } = useFetchAgentsQuery();
@@ -17,6 +18,12 @@ const AgentExplor = () => {
           <AgentsTable agents={data.payload.agents} />
         </>
       )}
+      {!data ||isLoading && (
+          <FadeLoader
+            color="#fff"
+            className="w-8 h-8 mx-auto py-5"
+          ></FadeLoader>
+        )}
     </div>
   );
 };

@@ -3,14 +3,15 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EwalletsTables from "./ewallets-table";
 import { useFetchPaymentMethosQuery } from "@/lib/features/paymentApiSlice";
+import { FadeLoader } from "react-spinners";
 
 const MethodsTabs = () => {
   const { data, isLoading } = useFetchPaymentMethosQuery();
-  console.log({ data });
+
   return (
     <>
       {data && !isLoading && (
-        <Tabs defaultValue="account" className="w-full">
+        <Tabs defaultValue="e-wallets" className="w-full">
           <TabsList>
             <TabsTrigger value="e-wallets">E-Wallets</TabsTrigger>
             <TabsTrigger value="card">Card</TabsTrigger>
@@ -20,6 +21,10 @@ const MethodsTabs = () => {
           </TabsContent>
           <TabsContent value="card">Card</TabsContent>
         </Tabs>
+      )}
+
+      {(!data || isLoading) && (
+        <FadeLoader color="#fff" className="w-8 h-8 mx-auto py-5"></FadeLoader>
       )}
     </>
   );

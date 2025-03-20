@@ -52,3 +52,17 @@ export const passwordChangeSchema = zod
 export const gmailChangeSchema = zod.object({
   newGmail: zod.string().email("Enter a valid Gmail address"),
 });
+
+export const contactUpdateSchema = zod.object({
+  email: zod.optional(zod.string().email()),
+  telegram: zod.optional(zod.string()),
+  facebook: zod.optional(zod.string()),
+});
+
+export const promoCodeUpdateSchema = zod.object({
+  promo: zod.string(),
+});
+
+export const bonusUpdateSchema = zod.object({
+  deposit: zod.string().min(1, "Deposit Bonus is require"),
+});

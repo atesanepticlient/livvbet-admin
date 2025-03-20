@@ -35,6 +35,10 @@ const Activity = () => {
           </div>
         </CardContent>
       )}
+
+      {!isLoading && payload?.length == 0 && (
+        <span className="text-center block py-4 text-xs">No Activity</span>
+      )}
     </Card>
   );
 };

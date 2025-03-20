@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { findAdmin } from "@/data/admin";
@@ -16,8 +17,23 @@ export const updateEWallet = async (
   eWalletId: string
 ) => {
   try {
-    const adminWallet = await db.adEWallet.findUnique({ where: { eWalletId } });
+    const adminWallet: any = await db.adEWallet.findUnique({
+      where: { eWalletId },
+    });
 
+    if (
+      !adminWallet?.withdraw.min ||
+      !adminWallet?.withdraw.max ||
+      !adminWallet?.withdraw.range ||
+      !adminWallet?.deposit.min ||
+      !adminWallet?.deposit.max ||
+      !adminWallet?.deposit.walletNumber ||
+      !adminWallet?.deposit.range ||
+      adminWallet?.withdraw ||
+      adminWallet?.deposit
+    ) {
+      return { error: "Set All Wallet info First" };
+    }
     const admin = await findAdmin();
 
     if (adminWallet) {

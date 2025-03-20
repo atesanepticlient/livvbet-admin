@@ -86,6 +86,7 @@ const EwalletsTables = ({ wallets }: EwalletsTablesProps) => {
                 eWalletId={w.id}
                 defautTab="deposit"
                 deposit={w?.admin?.deposit}
+                withdraw={w?.admin?.withdraw}
                 isRecommended={
                   w.admin?.isRecommended ? w.admin?.isRecommended : false
                 }
@@ -102,6 +103,7 @@ const EwalletsTables = ({ wallets }: EwalletsTablesProps) => {
                 eWalletId={w.id}
                 defautTab="withdraw"
                 withdraw={w?.admin?.withdraw}
+                deposit={w?.admin?.deposit}
                 isRecommended={
                   w.admin?.isRecommended ? w.admin?.isRecommended : false
                 }
@@ -153,6 +155,8 @@ const UpdateDialog = ({
   children: React.ReactNode;
   eWalletId: string;
 }) => {
+  console.log("withdraw", withdraw);
+  console.log("deposit", deposit);
   const [pending, startTransition] = useTransition();
 
   const form = useForm<
@@ -180,10 +184,11 @@ const UpdateDialog = ({
 
   useEffect(() => {
     if (deposit) {
-      form.reset({
+      form2.reset({
         min: deposit.min,
         max: deposit.max,
         range: deposit.range,
+        walletNumber: deposit.walletNumber,
       });
     }
   }, [deposit]);
@@ -212,6 +217,7 @@ const UpdateDialog = ({
           toast("Wallet updated");
         } else if (res.error) {
           toast(`Oh! ${res.error}`);
+          location.reload();
         }
       });
     });
@@ -339,7 +345,7 @@ const UpdateDialog = ({
                             onChange={(e) =>
                               form2.setValue("range", e.target.value.split(","))
                             }
-                            type="number"
+                            type="text"
                             placeholder="e.g.200,500,1000"
                           />
                         </FormControl>
@@ -348,7 +354,11 @@ const UpdateDialog = ({
                     )}
                   />
 
-                  <Button disabled={pending} className="w-full mt-2">
+                  <Button
+                    disabled={pending}
+                    variant={"secondary"}
+                    className="w-full mt-2"
+                  >
                     Update Deposit
                   </Button>
                 </form>
@@ -410,7 +420,7 @@ const UpdateDialog = ({
                             onChange={(e) =>
                               form.setValue("range", e.target.value.split(","))
                             }
-                            type="number"
+                            type="text"
                             placeholder="e.g.200,500,1000"
                           />
                         </FormControl>
@@ -419,7 +429,11 @@ const UpdateDialog = ({
                     )}
                   />
 
-                  <Button disabled={pending} className="w-full mt-2">
+                  <Button
+                    disabled={pending}
+                    variant={"secondary"}
+                    className="w-full mt-2"
+                  >
                     Update Withdraw
                   </Button>
                 </form>

@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { FetchQueryError } from "@/types/error";
 import { INTERNAL_SERVER_ERROR } from "@/error";
 import ClipLoader from "react-spinners/esm/ClipLoader";
+import { FadeLoader } from "react-spinners";
 
 const WithdrawTable = () => {
   const { data, isLoading } = useFetchWithdrawsQuery();
@@ -71,6 +72,9 @@ const WithdrawTable = () => {
             ))}
           </TableBody>
         </Table>
+      )}
+      {(!data || isLoading) && (
+        <FadeLoader color="#fff" className="w-8 h-8 mx-auto py-5"></FadeLoader>
       )}
     </div>
   );

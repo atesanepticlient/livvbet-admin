@@ -28,14 +28,14 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { createVerification, verifyAdmin } from "@/action/login";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect } from "next/navigation";
 // import { createAdmin, seedEwallets } from "@/action/create";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const redirectTo = useSearchParams().get("redirect") || "/dashboard";
+  // const redirectTo = useSearchParams().get("redirect") || "/dashboard";
 
   const [pending, startTransition] = useTransition();
   const [hasTokenSent, setTokenSent] = useState(false);
@@ -65,7 +65,8 @@ export function LoginForm({
       verifyAdmin(data).then((res) => {
         if (res.success) {
           toast(res.success);
-          redirect(redirectTo);
+          location.reload();
+          redirect("/dashboard");
         } else if (res.error) {
           toast(`Oh! ${res.error}`);
         }

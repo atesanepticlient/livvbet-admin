@@ -22,12 +22,12 @@ import { useRouter } from "next/navigation";
 
 const UsersTable = ({ users }: { users: Prisma.UsersGetPayload<object>[] }) => {
   return (
-    <div>
-      <Table>
+    <div className="overflow-hidden">
+      <Table className="min-w-[360px]">
         <TableCaption>A list of Users.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Email</TableHead>
+            <TableHead className="md:w-[110px]">Email</TableHead>
             <TableHead>Phone</TableHead>
             <TableHead>Control</TableHead>
             <TableHead className="text-right"></TableHead>

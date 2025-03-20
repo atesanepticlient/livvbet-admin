@@ -195,3 +195,11 @@ model Message {
   userId              String
   user                Users @relation(fields: [userId], references: [id])
 }
+
+
+model Contact {
+  id                  String @id @default(cuid())
+  telegram            String?
+  email               String?
+  facebook            String?
+}
