@@ -40,7 +40,7 @@ const data = {
           url: "/payment/withdraws",
         },
         {
-          title: "Methods",
+          title: "Add Banking",
           url: "/payment/methods",
         },
       ],
