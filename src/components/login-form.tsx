@@ -65,7 +65,7 @@ export function LoginForm({
       verifyAdmin(data).then((res) => {
         if (res.success) {
           toast(res.success);
-          location.reload();
+
           redirect("/dashboard");
         } else if (res.error) {
           toast(`Oh! ${res.error}`);
@@ -87,8 +87,8 @@ export function LoginForm({
           )}
         </CardHeader>
         <CardContent>
-          {/* <Button onClick={createAdmin}>Create</Button>
-          <Button onClick={seedEwallets}>Create</Button> */}
+          {/* <Button onClick={createAdmin}>Create</Button> */}
+          {/* <Button onClick={seedEwallets}>Create</Button> */}
           {!hasTokenSent ? (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleCreateVerification)}>

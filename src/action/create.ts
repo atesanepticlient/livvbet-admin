@@ -24,11 +24,11 @@ export const seedEwallets = async () => {
       {
         image:
           "https://logos-world.net/wp-content/uploads/2024/10/Bkash-Logo.jpg",
-        walletName: "Bkash",
+        walletName: "Upay",
       },
       {
         image: "https://download.logo.wine/logo/Nagad/Nagad-Logo.wine.png",
-        walletName: "Nagad",
+        walletName: "Rocket",
       },
     ],
   });
