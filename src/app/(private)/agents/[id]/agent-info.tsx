@@ -18,13 +18,15 @@ const AgentInfo = ({
     <div className="flex-1">
       <Card>
         <CardHeader>
-          <Image
-            className="w-[65%] h-auto mx-auto"
-            width={230}
-            height={200}
-            src={data.documents}
-            alt={data.fullName}
-          />
+          {data.documents && (
+            <Image
+              className="w-[65%] h-auto mx-auto"
+              width={230}
+              height={200}
+              src={data.documents}
+              alt={data.fullName}
+            />
+          )}
         </CardHeader>
         <CardContent>
           <ul className="flex flex-col gap-1">
