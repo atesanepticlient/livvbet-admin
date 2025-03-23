@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EwalletsTables from "./ewallets-table";
 import { useFetchPaymentMethosQuery } from "@/lib/features/paymentApiSlice";
 import { FadeLoader } from "react-spinners";
+import AddNewBanking from "./add-new-banking";
 
 const MethodsTabs = () => {
   const { data, isLoading } = useFetchPaymentMethosQuery();
@@ -17,6 +18,9 @@ const MethodsTabs = () => {
             <TabsTrigger value="card">Card</TabsTrigger>
           </TabsList>
           <TabsContent value="e-wallets">
+            <div className="flex justify-end items-center">
+              <AddNewBanking wallet={data.payload.methods.methodData} />
+            </div>
             <EwalletsTables wallets={data.payload.methods.methodData} />
           </TabsContent>
           <TabsContent value="card">Card</TabsContent>

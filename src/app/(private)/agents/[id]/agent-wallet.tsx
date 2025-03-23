@@ -28,7 +28,7 @@ const AgentWallet = ({
             {currencyFormatter(data.balance, data.currencyCode)}
           </h3>
           <div className="flex justify-center my-3">
-            {data.hasInactive ? (
+            {agentVerified ? (
               <Badge className="bg-blue-500 mx-auto text-center text-white">
                 Active
               </Badge>

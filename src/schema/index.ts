@@ -66,3 +66,7 @@ export const promoCodeUpdateSchema = zod.object({
 export const bonusUpdateSchema = zod.object({
   deposit: zod.string().min(1, "Deposit Bonus is require"),
 });
+
+export const addBankingSchema = zod.object({
+  bankingId: zod.string(),
+});
