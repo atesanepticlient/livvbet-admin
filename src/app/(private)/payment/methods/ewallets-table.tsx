@@ -217,7 +217,6 @@ const UpdateDialog = ({
           toast("Wallet updated");
         } else if (res.error) {
           toast(`Oh! ${res.error}`);
-          location.reload();
         }
       });
     });

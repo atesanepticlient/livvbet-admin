@@ -68,7 +68,7 @@ const data = {
       items: [
         {
           title: "Exlpor",
-          url: "/users/expor",
+          url: "/users/explor",
         },
         {
           title: "Update Users",

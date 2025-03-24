@@ -29,8 +29,8 @@ export const updateEWallet = async (
       !adminWallet?.deposit.max ||
       !adminWallet?.deposit.walletNumber ||
       !adminWallet?.deposit.range ||
-      adminWallet?.withdraw ||
-      adminWallet?.deposit
+      !adminWallet?.withdraw ||
+      !adminWallet?.deposit
     ) {
       return { error: "Set All Wallet info First" };
     }
