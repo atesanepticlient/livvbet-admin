@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  useDeleteWithdrawMutation,
   useFetchWithdrawsQuery,
   useUpdateWithdrawMutation,
 } from "@/lib/features/paymentApiSlice";
@@ -24,11 +25,30 @@ import { FetchQueryError } from "@/types/error";
 import { INTERNAL_SERVER_ERROR } from "@/error";
 import ClipLoader from "react-spinners/esm/ClipLoader";
 import { FadeLoader } from "react-spinners";
+import { Button } from "@/components/ui/button";
+import { MdDelete } from "react-icons/md";
 
 const WithdrawTable = () => {
   const { data, isLoading } = useFetchWithdrawsQuery();
   const payment = data?.payload;
+  const [deleteApi, { isLoading: deleting }] = useDeleteWithdrawMutation();
 
+
+  const handleDeleteWithdraw = (id: string) => {
+    deleteApi({ id })
+      .then((res) => {
+        if (res) {
+          toast.success(res.data?.message);
+        }
+      })
+      .catch((error) => {
+        if (error.data) {
+          toast.error(error.data.message);
+        } else {
+          toast.error(error.message);
+        }
+      });
+  };
   return (
     <div>
       {!isLoading && data && (
@@ -45,7 +65,8 @@ const WithdrawTable = () => {
               <TableHead>Method</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Amount</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead>Action</TableHead>
+              <TableHead className="text-right">Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -63,10 +84,18 @@ const WithdrawTable = () => {
                 <TableCell>
                   {w.user.wallet?.currencyCode} {w.amount}
                 </TableCell>
-                <TableCell className="text-right ">
+                <TableCell>
                   {w.status == "PENDING" && (
                     <WithdrawActionButton withdraw={w} />
                   )}
+                </TableCell>
+                <TableCell className="text-right ">
+                  <Button
+                    onClick={() => handleDeleteWithdraw(w.id)}
+                    variant={"destructive"}
+                  >
+                    <MdDelete className="w-4 h-4" />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -124,6 +153,7 @@ const WithdrawActionButton = ({
         });
     });
   };
+
   return (
     <div className="flex gap-1">
       <button

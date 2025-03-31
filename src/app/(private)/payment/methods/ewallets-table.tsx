@@ -48,6 +48,7 @@ import {
   updateEWalletWithdraw,
 } from "@/action/wallet";
 import { toast } from "sonner";
+import { MdDelete } from "react-icons/md";
 
 interface EwalletsTablesProps {
   wallets: Prisma.eWalletGetPayload<{ include: { admin: true } }>[];
@@ -64,7 +65,8 @@ const EwalletsTables = ({ wallets }: EwalletsTablesProps) => {
           <TableHead>Deposit</TableHead>
           <TableHead>Withdraw</TableHead>
           <TableHead>Recommended</TableHead>
-          <TableHead className="text-right">Status</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right">Delete</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -125,11 +127,17 @@ const EwalletsTables = ({ wallets }: EwalletsTablesProps) => {
             </TableCell>
 
             <TableCell
-              className={`text-right ${
+              className={` ${
                 w?.admin?.isActive ? "text-emerald-500" : "text-destructive"
               }`}
             >
               {w?.admin?.isActive ? "Active" : "InActive"}
+            </TableCell>
+
+            <TableCell className={`text-right `}>
+              <Button variant={"destructive"}>
+                <MdDelete />
+              </Button>
             </TableCell>
           </TableRow>
         ))}

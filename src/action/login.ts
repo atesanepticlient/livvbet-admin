@@ -49,7 +49,8 @@ export const createVerification = async (
     }
 
     return { success: true };
-  } catch {
+  } catch (error) {
+    console.error("LOGIN ERROR ", error)
     return { error: INTERNAL_SERVER_ERROR };
   }
 };
@@ -86,6 +87,7 @@ export const verifyAdmin = async (data: zod.infer<typeof loginSchema>) => {
 
     return { success: "Login successfull" };
   } catch (error) {
+
     if (error instanceof Error) {
       if (error.name !== "AccessDenied") {
         const credentialsError = error as CredentialsSignin;

@@ -11,10 +11,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  useDeleteDepositMutation,
   useFetchDepositsQuery,
   useUpdateDepositMutation,
 } from "@/lib/features/paymentApiSlice";
-
+import { MdDelete } from "react-icons/md";
 import moment from "moment";
 import { PaymentStatus, Prisma } from "@prisma/client";
 import { FaCheck } from "react-icons/fa6";
@@ -24,9 +25,28 @@ import { FetchQueryError } from "@/types/error";
 import { INTERNAL_SERVER_ERROR } from "@/error";
 import ClipLoader from "react-spinners/esm/ClipLoader";
 import { FadeLoader } from "react-spinners";
+import { Button } from "@/components/ui/button";
 const DepositTable = () => {
   const { data, isLoading } = useFetchDepositsQuery();
   const payment = data?.payload;
+
+  const [deleteApi, { isLoading: deleting }] = useDeleteDepositMutation();
+
+  const handleDeleteDeposit = (id: string) => {
+    deleteApi({ id })
+      .then((res) => {
+        if (res) {
+          toast.success(res.data?.message);
+        }
+      })
+      .catch((error) => {
+        if (error.data) {
+          toast.error(error.data.message);
+        } else {
+          toast.error(error.message);
+        }
+      });
+  };
 
   return (
     <div>
@@ -45,7 +65,8 @@ const DepositTable = () => {
               <TableHead>Method</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Amount</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead>Action</TableHead>
+              <TableHead className="text-right">Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -63,8 +84,16 @@ const DepositTable = () => {
                 <TableCell>
                   {d.user.wallet?.currencyCode} {d.amount}
                 </TableCell>
-                <TableCell className="text-right ">
+                <TableCell>
                   {d.status == "PENDING" && <PaymentUpdateAction deposit={d} />}
+                </TableCell>
+                <TableCell className="text-right ">
+                  <Button
+                    onClick={() => handleDeleteDeposit(d.id)}
+                    variant={"destructive"}
+                  >
+                    <MdDelete className="w-4 h-4" />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

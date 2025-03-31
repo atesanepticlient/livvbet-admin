@@ -54,6 +54,22 @@ const agentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["withdraw"],
     }),
+
+    deleteDeposit: builder.mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/api/payment/deposits/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["deposit"],
+    }),
+
+    deleteWithdraw: builder.mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/api/payment/withdraws/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["withdraw"],
+    }),
   }),
 });
 
@@ -63,4 +79,6 @@ export const {
   useFetchWithdrawsQuery,
   useUpdateDepositMutation,
   useUpdateWithdrawMutation,
+  useDeleteDepositMutation,
+  useDeleteWithdrawMutation,
 } = agentApiSlice;

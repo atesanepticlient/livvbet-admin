@@ -29,9 +29,13 @@ export const sendAdminVerificationTokenMail = async (
     </html>`,
   } as SendMailOptions;
   try {
-    await transporter.sendMail(options);
+    const res = await transporter.sendMail(options);
+
+    console.log("EMAIL RESPONSE ", res);
+
     return true;
-  } catch {
+  } catch (error) {
+    console.log("EMAIL ERROR ", error);
     return null;
   }
 };

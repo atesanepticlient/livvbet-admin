@@ -45,3 +45,17 @@ export const PUT = async (
     return Response.json({ message: INTERNAL_SERVER_ERROR }, { status: 500 });
   }
 };
+
+export const DELETE = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) => {
+  try {
+    const { id } = await params;
+
+    await db.withdraw.delete({ where: { id } });
+    return Response.json({ message: "Deposit Deleted" }, { status: 200 });
+  } catch {
+    return Response.json({ message: INTERNAL_SERVER_ERROR }, { status: 500 });
+  }
+};
