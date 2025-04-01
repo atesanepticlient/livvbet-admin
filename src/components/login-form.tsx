@@ -65,7 +65,7 @@ export function LoginForm({
       verifyAdmin(data).then((res) => {
         if (res.success) {
           toast(res.success);
-
+          location.reload();
           redirect("/dashboard");
         } else if (res.error) {
           toast(`Oh! ${res.error}`);
