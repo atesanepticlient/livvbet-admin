@@ -9,6 +9,8 @@ import AddNewBanking from "./add-new-banking";
 const MethodsTabs = () => {
   const { data, isLoading } = useFetchPaymentMethosQuery();
 
+  const ewallets = data?.payload.methods[0];
+
   return (
     <>
       {data && !isLoading && (
@@ -19,9 +21,9 @@ const MethodsTabs = () => {
           </TabsList>
           <TabsContent value="e-wallets">
             <div className="flex justify-end items-center">
-              <AddNewBanking wallet={data.payload.methods.methodData} />
+              <AddNewBanking wallet={ewallets!.methodData} />
             </div>
-            <EwalletsTables wallets={data.payload.methods.methodData} />
+            <EwalletsTables wallets={ewallets!.methodData} />
           </TabsContent>
           <TabsContent value="card">Card</TabsContent>
         </Tabs>

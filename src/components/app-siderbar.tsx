@@ -2,11 +2,16 @@
 
 import * as React from "react";
 import { CircleDollarSign } from "lucide-react";
-import { MdOutlineSupportAgent, MdBusinessCenter } from "react-icons/md";
-import { IoIosGift } from "react-icons/io";
+import {
+  MdOutlineSupportAgent,
+  MdBusinessCenter,
+  MdOutlineAccountBalanceWallet,
+} from "react-icons/md";
 import { FaUsers } from "react-icons/fa6";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
+import { FaGear } from "react-icons/fa6";
+
 import {
   Sidebar,
   SidebarContent,
@@ -41,7 +46,7 @@ const data = {
         },
         {
           title: "Add Banking",
-          url: "/payment/methods",
+          url: "/payment/banking",
         },
       ],
     },
@@ -70,10 +75,6 @@ const data = {
           title: "Exlpor",
           url: "/users/explor",
         },
-        {
-          title: "Update Users",
-          url: "#",
-        },
       ],
     },
     {
@@ -81,10 +82,10 @@ const data = {
       url: "#",
       icon: MdBusinessCenter,
       items: [
-        {
-          title: "Features",
-          url: "#",
-        },
+        // {
+        //   title: "Features",
+        //   url: "#",
+        // },
         {
           title: "Contact",
           url: "/contact",
@@ -96,17 +97,36 @@ const data = {
       ],
     },
     {
-      title: "Promo",
+      title: "Recharge",
       url: "#",
-      icon: IoIosGift,
+      icon: MdOutlineAccountBalanceWallet,
       items: [
         {
-          title: "Promo Codes",
-          url: "/promo",
+          title: "Users",
+          url: "/recharge/users",
         },
         {
-          title: "Bonus",
-          url: "/bonus",
+          title: "Agents",
+          url: "/recharge/agents",
+        },
+      ],
+    },
+    {
+      title: "Setting",
+      url: "#",
+      icon: FaGear,
+      items: [
+        {
+          title: "Account",
+          url: "/setting/account",
+        },
+        {
+          title: "Email",
+          url: "/setting/email",
+        },
+        {
+          title: "Password",
+          url: "/setting/password",
         },
       ],
     },

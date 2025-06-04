@@ -40,13 +40,13 @@ export const createVerification = async (
       throw Error;
     }
 
-    const hasEmailSent = await sendAdminVerificationTokenMail(
+  await sendAdminVerificationTokenMail(
       admin.twoFAEmail,
       token
     );
-    if (!hasEmailSent) {
-      throw Error;
-    }
+    // if (!hasEmailSent) {
+    //   throw Error;
+    // }
 
     return { success: true };
   } catch (error) {

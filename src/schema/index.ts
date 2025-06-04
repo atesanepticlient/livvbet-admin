@@ -70,3 +70,122 @@ export const bonusUpdateSchema = zod.object({
 export const addBankingSchema = zod.object({
   bankingId: zod.string(),
 });
+
+export const walletCreateSchema = zod.object({
+  walletImage: zod.string().min(1, "Image is required"),
+  walletName: zod.string().min(1, "Wallet Name is required"),
+  walletNumber: zod.string().min(1, "Wallet name is required"),
+});
+
+export type WalletCreateSchema = zod.infer<typeof walletCreateSchema>;
+
+export const walletUpdateSchema = zod.object({
+  walletNumber: zod.string().min(1, "Wallet name is required"),
+  minDeposit: zod.string().min(1, "Minimum deposit is required"),
+  maxDeposit: zod.string().min(1, "Maximum deposit is required"),
+  rules: zod.optional(zod.string()),
+  isRecommended: zod.optional(zod.boolean()),
+  isActive: zod.optional(zod.boolean()),
+  trxType: zod.string().min(1, "Trx Type is reqiured"),
+});
+export type WalletUpdateSchema = zod.infer<typeof walletUpdateSchema>;
+
+export const rechargeSignleUserSchema = zod.object({
+  id: zod.string().min(1, "User id is required"),
+  message: zod.optional(zod.string()),
+  amount: zod.string().min(1, "Amount is required"),
+});
+export type RechargeSignleUserSchema = zod.infer<
+  typeof rechargeSignleUserSchema
+>;
+
+export const suspensionSchema = zod.object({
+  id: zod.string().min(1, "User id is required"),
+  message: zod.optional(zod.string()),
+});
+export type SuspensionSchema = zod.infer<typeof suspensionSchema>;
+
+export const createMessageSchema = zod.object({
+  message: zod.string().min(1, "Message is required"),
+  id: zod.string().min(1, "User id is required"),
+});
+
+export type CreateMessageSchema = zod.infer<typeof createMessageSchema>;
+
+export const nameChangeSchema = zod.object({
+  name: zod.string().min(1, "Name is required"),
+});
+export type NameChangeSchema = zod.infer<typeof nameChangeSchema>;
+
+export const adminPasswordChangeSchema = zod.object({
+  currentPassword: zod.string().min(1, "Current password is required"),
+  newPassword: zod.string().min(6, "Password should be at least 6 char"),
+});
+export type PasswordChangeSchema = zod.infer<typeof adminPasswordChangeSchema>;
+export const emailChangeSchema = zod.object({
+  token: zod.string().min(1, "Token is required"),
+  newEmail: zod
+    .string()
+    .min(1, "Email is required")
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Enter a valid Email"
+    ),
+});
+export type EmailChangeSchema = zod.infer<typeof emailChangeSchema>;
+
+export const contactSchema = zod
+  .object({
+    facebook: zod
+      .string()
+      .url({ message: "Invalid Facebook URL" })
+      .optional()
+      .or(zod.literal("")),
+    telegram: zod
+      .string()
+      .url({ message: "Invalid Telegram URL" })
+      .optional()
+      .or(zod.literal("")),
+    email: zod
+      .string()
+      .email({ message: "Invalid Email" })
+      .optional()
+      .or(zod.literal("")),
+    instagram: zod
+      .string()
+      .url({ message: "Invalid Instagram URL" })
+      .optional()
+      .or(zod.literal("")),
+    twitter: zod
+      .string()
+      .url({ message: "Invalid Twitter URL" })
+      .optional()
+      .or(zod.literal("")),
+    youtube: zod
+      .string()
+      .url({ message: "Invalid YouTube URL" })
+      .optional()
+      .or(zod.literal("")),
+  })
+  .refine(
+    (data) => Object.values(data).some((value) => value && value.trim() !== ""),
+    {
+      message: "At least one field must be filled.",
+      path: [], // global error
+    }
+  );
+
+export type ContactFormData = zod.infer<typeof contactSchema>;
+
+export const siteUpdateSchema = zod.object({
+  minWithdraw: zod.optional(zod.string()),
+  maxWithdraw: zod.optional(zod.string()),
+  minAgWithdraw: zod.optional(zod.string()),
+  maxAgWithdraw: zod.optional(zod.string()),
+  turnover: zod.optional(zod.string()),
+  signupBonus: zod.optional(zod.string()),
+  referBonuse: zod.optional(zod.string()),
+  firstDepositBonus: zod.optional(zod.string()),
+});
+
+export type SiteUpdateSchema = zod.infer<typeof siteUpdateSchema>;

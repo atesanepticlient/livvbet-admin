@@ -11,7 +11,6 @@ export const createAdmin = async () => {
       fullName: "San Bin Hoque",
       password: hasedPassword,
       twoFAEmail: "mdhashemmia230@gmail.com",
-      promo: "1xbet",
     },
   });
 

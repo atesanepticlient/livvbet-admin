@@ -1,5 +1,4 @@
 import { INTERNAL_SERVER_ERROR } from "@/error";
-import { createMessage } from "@/helpers/message";
 import { db } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
@@ -16,27 +15,32 @@ export const PUT = async (
     if (change !== "accept" && change !== "reject") {
       return Response.json({ message: "Invalid Route" });
     }
+
+    const { message } = await req.json();
+
     const updateData: Prisma.WithdrawUpdateInput = {};
-    const historyUpdate: Prisma.PaymentHistoryUpdateInput = {};
     if (change == "accept") {
       updateData.status = "ACCEPTED";
-      historyUpdate.status = "SUCCESS";
     } else if (change == "reject") {
       updateData.status = "REJECTED";
-      historyUpdate.status = "FAILED";
     }
     const updatedWithdraw = await db.withdraw.update({
       where: {
         id,
       },
-      data: { ...updateData, transactions: { update: historyUpdate } },
+      data: { ...updateData },
     });
 
-    if (change == "accept") {
-      await createMessage({
-        title: "Deposit",
-        description: `Amount withdraw ${updatedWithdraw.amount}`,
-        userId: updatedWithdraw.userId,
+    if (message) {
+      await db.message.create({
+        data: {
+          title: message,
+          user: {
+            connect: {
+              id: updatedWithdraw.userId,
+            },
+          },
+        },
       });
     }
 

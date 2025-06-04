@@ -5,42 +5,54 @@ import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const route = new URL(req.url);
+    const { searchParams } = new URL(req.url);
 
-    const search = route.searchParams.get("search") || "";
-    const userType = route.searchParams.get("userType") || "all";
+    // Filters
+    const status = searchParams.get("status") || "all"; // banned | unbanned | all
+    const search = searchParams.get("search") || "";
+    // Pagination
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const skip = (page - 1) * limit;
 
     const query: Prisma.UsersWhereInput = {};
 
-    if (search) {
-      query.email = { contains: search };
+    if (status === "banned") {
+      query.isBanned = true;
+    } else if (status === "unbanned") {
+      query.isBanned = false;
     }
 
-    if (userType && userType !== "all") {
-      query.refererType = userType;
+    if (search) {
+      query.OR = [
+        { playerId: { contains: search, mode: "insensitive" } },
+        { phone: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } },
+      ];
     }
+
+    // Total count for pagination
+    const total = await db.users.count({ where: query });
 
     const users = await db.users.findMany({
       where: query,
-    });
-
-    const totalUserCount = await db.users.count({ where: {} });
-    const totalActiveUserCount = await db.users.count({
-      where: { isBanned: false },
-    });
-    const totalBannedUserCount = await db.users.count({
-      where: { isBanned: true },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip,
+      take: limit,
     });
 
     return Response.json({
       payload: {
-        users,
-        totalUserCount,
-        totalActiveUserCount,
-        totalBannedUserCount,
+        total,
+        page: +page,
+        limit: +limit,
+        users: users,
       },
     });
-  } catch {
+  } catch (error) {
+    console.log("user data fetch ", error)
     return Response.json({ message: INTERNAL_SERVER_ERROR }, { status: 500 });
   }
 };

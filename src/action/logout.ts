@@ -1,11 +1,11 @@
 "use server";
 
+import { signOut } from "@/auth";
 import { INTERNAL_SERVER_ERROR } from "@/error";
-import { signOut } from "next-auth/react";
 
 export const logout = async () => {
   try {
-    await signOut();
+    await signOut({ redirect: false });
 
     return { success: true };
   } catch {

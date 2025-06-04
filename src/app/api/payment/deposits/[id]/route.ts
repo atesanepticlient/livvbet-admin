@@ -1,5 +1,4 @@
 import { INTERNAL_SERVER_ERROR } from "@/error";
-import { createMessage } from "@/helpers/message";
 import { db } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
@@ -14,27 +13,26 @@ export const PUT = async (
     const change = new URL(req.url).searchParams.get("change") as
       | "accept"
       | "reject";
-
+    console.log({ change });
     if (change !== "accept" && change !== "reject") {
-      return Response.json({ message: "Invalid Route" });
+      return Response.json({ message: "Invalid Route" }, { status: 400 });
     }
 
+    const { message } = await req.json();
+
     const updateData: Prisma.DepositUpdateInput = {};
-    const historyUpdate: Prisma.PaymentHistoryUpdateInput = {};
 
     if (change == "accept") {
       updateData.status = "ACCEPTED";
-      historyUpdate.status = "SUCCESS";
     } else if (change == "reject") {
       updateData.status = "REJECTED";
-      historyUpdate.status = "FAILED";
     }
 
     const updatedDeposit = await db.deposit.update({
       where: {
         id,
       },
-      data: { ...updateData, transactions: { update: historyUpdate } },
+      data: { ...updateData },
     });
 
     if (change == "accept") {
@@ -48,10 +46,18 @@ export const PUT = async (
           },
         },
       });
-      await createMessage({
-        title: "Deposit",
-        description: `Amount deposited ${updatedDeposit.amount}`,
-        userId: updatedDeposit.userId,
+    }
+
+    if (message) {
+      await db.message.create({
+        data: {
+          title: message,
+          user: {
+            connect: {
+              id: updatedDeposit.userId,
+            },
+          },
+        },
       });
     }
 

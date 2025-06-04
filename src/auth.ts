@@ -8,11 +8,11 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  
+
   pages: {
     signIn: "/login",
   },
-
+  trustHost: true,
   callbacks: {
     async jwt({ token }) {
       return token;
@@ -24,9 +24,9 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
         if (admin?.password) {
           admin.password = "";
         }
- 
+
         if (admin) {
-          session.user = { ...admin,emailVerified : new Date() };
+          session.user = { ...admin, emailVerified: new Date() };
         }
       }
       return session;
