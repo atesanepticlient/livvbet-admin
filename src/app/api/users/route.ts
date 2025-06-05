@@ -39,6 +39,9 @@ export const GET = async (req: NextRequest) => {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        wallet: true,
+      },
       skip,
       take: limit,
     });
@@ -52,7 +55,7 @@ export const GET = async (req: NextRequest) => {
       },
     });
   } catch (error) {
-    console.log("user data fetch ", error)
+    console.log("user data fetch ", error);
     return Response.json({ message: INTERNAL_SERVER_ERROR }, { status: 500 });
   }
 };

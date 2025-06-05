@@ -19,7 +19,7 @@ export interface UsersDataOutput {
     total: number;
     page: number;
     limit: number;
-    users: Prisma.UsersGetPayload<object>[];
+    users: Prisma.UsersGetPayload<{ include: { wallet: true } }>[];
   };
 }
 

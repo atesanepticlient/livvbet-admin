@@ -189,3 +189,11 @@ export const siteUpdateSchema = zod.object({
 });
 
 export type SiteUpdateSchema = zod.infer<typeof siteUpdateSchema>;
+
+export const multipleRecharge = zod.object({
+  message: zod.optional(zod.string()),
+  amount: zod.string().min(1, "Amount is required"),
+  users: zod.array(zod.string()).min(1, "Select Minimul one user"),
+});
+
+export type MultipleRecharge = zod.infer<typeof multipleRecharge>;
