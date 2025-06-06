@@ -39,6 +39,19 @@ const agentApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    searchAgents: builder.query({
+      query: (query) => `/api/deposit?query=${query}`,
+      providesTags: ["agent"],
+    }),
+    depositToWallet: builder.mutation({
+      query: (body) => ({
+        url: "/api/deposit",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["agent", "AgentWallet"],
+    }),
   }),
 });
 
@@ -47,4 +60,6 @@ export const {
   useUpdateVerifiedAgentsMutation,
   useFetchAgentQuery,
   useFetchAgentsQuery,
+  useSearchAgentsQuery,
+  useDepositToWalletMutation,
 } = agentApiSlice;

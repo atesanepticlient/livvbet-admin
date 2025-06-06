@@ -42,6 +42,11 @@ model Users {
   referral            Referral ?
   referredBy          Referral ? @relation("ReferredUsers", fields: [referredById], references: [id])
   referredById        String?
+  agentDepositRecords AgentDepositRecord[]
+  agentWithdrawRecords AgentWithdrawRecord[]
+
+  agentId              String?
+  agent                agent?   @relation(fields: [agentId], references: [id])
   @@unique([email,playerId])
 }
 
@@ -85,8 +90,55 @@ model agent {
   createdAt           DateTime @default(now())
   agent               agentWallet?
   eWallet             AgEWallet[]
+  depositRecords      AgentDepositRecord[]
+  withdrawRecords     AgentWithdrawRecord[]
+  withdrawAddress     AgentWithdrawAddress?
+
+  users               Users[]
+}
+
+model AgentWithdrawAddress {
+  id                  String @id @default(cuid())
+  country             String
+  city                String
+  postOffice          String
+  storeName           String @unique
+  token               String @unique
+  createdAt           DateTime @default(now())
+  agentId             String @unique
+  agent               agent @relation(fields: [agentId], references: [id])
+}
+
+
+model AgentDepositRecord {
+  id                  String @id @default(cuid())
+  amount              Decimal
+  agentId             String
+  agent               agent @relation(fields: [agentId], references: [id])
+  userId              String
+  user                Users @relation(fields: [userId], references: [id])
+  createdAt           DateTime @default(now())
+}
+
+
+enum WithdrawStatus {
+  PENDING
+  ACCEPTED
+}
+model AgentWithdrawRecord {
+  id                  String @id @default(cuid())
+  amount              Decimal
+  withdrawCode        String
+  agentId             String
+  status              WithdrawStatus @default(PENDING)
+  agent               agent @relation(fields: [agentId], references: [id])
+  userId              String
+  user                Users @relation(fields: [userId], references: [id])
+  createdAt           DateTime @default(now())
 
 }
+
+
 model agentWallet {
   id                  String @id @default(cuid())
   balance             Decimal
