@@ -64,6 +64,10 @@ const data = {
           title: "Pending",
           url: "/agents/pending",
         },
+        {
+          title: "Payouts",
+          url: "/agents/payouts",
+        },
       ],
     },
     {
@@ -92,7 +96,7 @@ const data = {
         },
         {
           title: "Setting",
-          url: "/setting",
+          url: "/site",
         },
       ],
     },
@@ -143,7 +147,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <NavUser
           user={{
-            name: "MD Hashem Mia",
+            name: admin!.fullName,
             email: admin!.email,
             avatar: "/avatars/shadcn.jpg",
           }}

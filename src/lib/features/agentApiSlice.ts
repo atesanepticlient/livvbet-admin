@@ -52,6 +52,21 @@ const agentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["agent", "AgentWallet"],
     }),
+    getAgentsPayoutRequests: builder.query({
+      query: ({ page = 1, limit = 10, status }) =>
+        `/api/agents/payouts?page=${page}&limit=${limit}${
+          status ? `&status=${status}` : ""
+        }`,
+      providesTags: ["agentPayouts"],
+    }),
+    updateWithdrawalRequestStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/api/agents/payouts/${id}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["agentPayouts"],
+    }),
   }),
 });
 
@@ -62,4 +77,6 @@ export const {
   useFetchAgentsQuery,
   useSearchAgentsQuery,
   useDepositToWalletMutation,
+  useGetAgentsPayoutRequestsQuery,
+  useUpdateWithdrawalRequestStatusMutation,
 } = agentApiSlice;

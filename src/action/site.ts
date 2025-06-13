@@ -14,7 +14,7 @@ export async function updateSiteAction(formData: SiteUpdateSchema) {
   }
 
   const { ...data } = result.data;
-
+  console.log({data})
   const site = await db.site.findFirst({ where: {} });
 
   if (!site) return { success: false, error: "Please Seed a site first" };
@@ -33,6 +33,3 @@ export async function updateSiteAction(formData: SiteUpdateSchema) {
     };
   }
 }
-
-
-

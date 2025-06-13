@@ -13,6 +13,7 @@ export const apiSlice = createApi({
     "deposit",
     "withdraw",
     "contact",
+    "agentPayouts",
   ],
   endpoints: () => ({}),
 });

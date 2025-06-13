@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, LayoutDashboard } from "lucide-react";
+import { IoMdCode } from "react-icons/io";
 
 import {
   Collapsible,
@@ -17,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export function NavMain({
   items,
@@ -37,10 +39,12 @@ export function NavMain({
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton tooltip={"Dashboard"}>
-            <LayoutDashboard />
-            <span>Dashboard</span>
-          </SidebarMenuButton>
+          <Link href="/dashboard">
+            <SidebarMenuButton tooltip={"Dashboard"}>
+              <LayoutDashboard />
+              <span>Dashboard</span>
+            </SidebarMenuButton>
+          </Link>
         </SidebarMenuItem>
         {items.map((item) => (
           <Collapsible
@@ -73,6 +77,15 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
+
+        <SidebarMenuItem>
+          <Link href="/game-api">
+            <SidebarMenuButton tooltip={"Dashboard"}>
+              <IoMdCode />
+              <span>API</span>
+            </SidebarMenuButton>
+          </Link>
+        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );

@@ -37,9 +37,15 @@ const Site = () => {
       maxWithdraw: "",
       minAgWithdraw: "",
       minWithdraw: "",
-      referBonuse: "",
-      signupBonus: "",
+      referBonuseMainUser: "",
+      referBonuseRefererUser: "",
       turnover: "",
+      maxAgentPayout: "",
+      minAgentPayout: "",
+      agentDepositEarning: "",
+      agentWithdrawEarning: "",
+      maxAgDeposit: "",
+      minAgDeposit: "",
     },
     resolver: zodResolver(siteUpdateSchema),
   });
@@ -70,9 +76,15 @@ const Site = () => {
         maxWithdraw: site.maxWithdraw?.toString() || "",
         minAgWithdraw: site.minAgWithdraw?.toString() || "",
         minWithdraw: site.minWithdraw?.toString() || "",
-        referBonuse: site.referBonuse?.toString() || "",
-        signupBonus: site.signupBonus?.toString() || "",
-        turnover: site.firstDepositBonus?.toString() || "",
+        maxAgDeposit: site.maxAgDeposit?.toString() || "",
+        minAgDeposit: site.minAgDeposit?.toString() || "",
+        referBonuseMainUser: site.referBonuseMainUser?.toString() || "",
+        referBonuseRefererUser: site.referBonuseRefererUser?.toString() || "",
+        turnover: site.turnover?.toString() || "",
+        maxAgentPayout: site.maxAgentPayout?.toString() || "",
+        minAgentPayout: site.minAgentPayout?.toString() || "",
+        agentDepositEarning: site.agentDepositEarning?.toString() || "",
+        agentWithdrawEarning: site.agentWithdrawEarning?.toString() || "",
       });
     }
   }, [site]);
@@ -84,187 +96,323 @@ const Site = () => {
           <CookieLoader />
         </div>
       )}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <Card className="w-[300px] md:w-[350px] lg:w-[420px]">
-            <CardHeader>
-              <CardTitle>Site</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <FormField
-                control={form.control}
-                name="minWithdraw"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Min Withdraw</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:100"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+      {site && !isLoading && (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <Card className="w-[300px] md:w-[350px] lg:w-[420px]">
+              <CardHeader>
+                <CardTitle className="text-lg">Site</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex justify-end">
+                  <span className="text-sm">
+                    <b>User</b>
+                  </span>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="minWithdraw"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Min Withdraw</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="maxWithdraw"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Max Withdraw</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:100"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="maxWithdraw"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Max Withdraw</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="minAgWithdraw"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Min Withdraw (Agent)</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:100"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="minAgDeposit"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Min Agent Deposit</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="maxAgWithdraw"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Max Withdraw (Agent) </FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:100"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="maxAgDeposit"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Max Agent Deposit</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="turnover"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Deposit Turnover [%]</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:10%"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="minAgWithdraw"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Min Agent Withdraw </FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="signupBonus"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Signup Bonus [%]</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:10%"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="maxAgWithdraw"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Max Agent Withdraw </FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="referBonuse"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Refer Bonus [%]</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:10%"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="turnover"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Deposit Turnover [X]</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:10%"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="firstDepositBonus"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>Fisrt Deposit Bonus [%]</FormLabel>
-                    <div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          className="w-[100px]"
-                          placeholder="Ex:10%"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button type="submit">Save</Button>
-            </CardFooter>
-          </Card>
-        </form>
-      </Form>
+                <FormField
+                  control={form.control}
+                  name="referBonuseMainUser"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Refer Bonus </FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="referBonuseRefererUser"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Referrer User Bonus </FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="firstDepositBonus"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Fisrt Deposit Bonus [%]</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:10%"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex justify-end">
+                  <span className="text-sm">
+                    <b>Agent</b>
+                  </span>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="minAgentPayout"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Minimum Agent Payout</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="maxAgentPayout"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Maximum Agent Payout</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:100"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="agentDepositEarning"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Deposit Commission [%]</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:10%"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="agentWithdrawEarning"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between">
+                      <FormLabel>Withdraw Commission [%]</FormLabel>
+                      <div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            {...field}
+                            className="w-[100px]"
+                            placeholder="Ex:10%"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button type="submit">Save</Button>
+              </CardFooter>
+            </Card>
+          </form>
+        </Form>
+      )}
     </div>
   );
 };

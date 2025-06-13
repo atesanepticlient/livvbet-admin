@@ -183,9 +183,15 @@ export const siteUpdateSchema = zod.object({
   minAgWithdraw: zod.optional(zod.string()),
   maxAgWithdraw: zod.optional(zod.string()),
   turnover: zod.optional(zod.string()),
-  signupBonus: zod.optional(zod.string()),
-  referBonuse: zod.optional(zod.string()),
+  referBonuseMainUser: zod.optional(zod.string()),
+  referBonuseRefererUser: zod.optional(zod.string()),
   firstDepositBonus: zod.optional(zod.string()),
+  minAgentPayout: zod.optional(zod.string()),
+  maxAgentPayout: zod.optional(zod.string()),
+  agentDepositEarning: zod.optional(zod.string()),
+  agentWithdrawEarning: zod.optional(zod.string()),
+  maxAgDeposit: zod.optional(zod.string()),
+  minAgDeposit: zod.optional(zod.string()),
 });
 
 export type SiteUpdateSchema = zod.infer<typeof siteUpdateSchema>;

@@ -19,7 +19,7 @@ const seedAdmin = async () => {
   });
   console.log("Created");
 };
-seedAdmin();
+
 const seedSite = async () => {
   await db.site.create({
     data: {},
