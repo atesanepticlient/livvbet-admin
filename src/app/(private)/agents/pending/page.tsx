@@ -39,7 +39,7 @@ export default function PendingAgentsPage() {
       await verifyAgent({ id, action }).unwrap();
       toast.success(`Agent ${action}d successfully`);
       setSelectedAgent(null);
-    } catch (error) {
+    } catch  {
       toast.error(`Failed to ${action} agent`);
     }
   };
@@ -113,7 +113,7 @@ export default function PendingAgentsPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              agents?.map((agent : any) => (
+              agents?.map((agent: any) => (
                 <TableRow key={agent.id}>
                   <TableCell>{agent.fullName}</TableCell>
                   <TableCell>{agent.email}</TableCell>
@@ -164,7 +164,7 @@ export default function PendingAgentsPage() {
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              {selectedAgent?.fullName}'s Verification Documents
+              {selectedAgent?.fullName}&apos;s Verification Documents
             </DialogTitle>
           </DialogHeader>
           <div className="relative aspect-video bg-gray-100 rounded-md overflow-hidden">

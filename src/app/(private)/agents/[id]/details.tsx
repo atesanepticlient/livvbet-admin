@@ -23,31 +23,25 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   useBanAgentMutation,
   useDeleteAgentMutation,
 } from "@/lib/features/agentApiSlice";
 import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { INTERNAL_SERVER_ERROR } from "@/error";
 import CookieLoader from "@/components/loader/cooki-loader";
 
 export default function AgentDetails({ id }: { id: string }) {
   const { data, isLoading, isError, error } = useFetchAgentQuery({ id });
   console.log({ data });
-  const [rechargeAmount, setRechargeAmount] = useState("");
-  const router = useRouter();
 
   const [banAgent] = useBanAgentMutation();
   const [deleteAgent] = useDeleteAgentMutation();
 
   const handleBanAgent = async () => {
     const asyncAction = async () => {
-      const res = await banAgent(id).unwrap();
+      await banAgent(id).unwrap();
       return true;
     };
 
@@ -65,7 +59,7 @@ export default function AgentDetails({ id }: { id: string }) {
     if (!confirm) return false;
 
     const asyncAction = async () => {
-      const res = await deleteAgent(id).unwrap();
+       await deleteAgent(id).unwrap();
       return true;
     };
 
@@ -102,7 +96,7 @@ export default function AgentDetails({ id }: { id: string }) {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">
-          {data.agent.fullName}'s Dashboard
+          {data.agent.fullName}&lsquo;s Dashboard
         </h1>
         <div className="flex gap-2">
           <Button

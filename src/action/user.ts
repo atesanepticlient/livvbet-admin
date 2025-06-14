@@ -28,7 +28,7 @@ export const userDelete = async (userId: string) => {
     ]);
 
     return { success: true };
-  } catch (error) {
+  } catch {
     return { error: INTERNAL_SERVER_ERROR };
   }
 };
