@@ -53,9 +53,10 @@ import {
   RechargeSignleUserSchema,
 } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { userDelete } from "@/action/user";
 
 const Details = ({ id }: { id: string }) => {
-  const { data, isLoading } = useFetchUserQuery({ id });
+  const { data, isLoading, isError, error } = useFetchUserQuery({ id });
 
   const user = data?.user;
   const financialOverview = data?.financialOverview;
@@ -147,6 +148,39 @@ const Details = ({ id }: { id: string }) => {
     }
   }, [user]);
 
+  const handleDelete = () => {
+    if (!user?.id) {
+      return 0;
+    }
+    const confirm = window.confirm("Are You Sure to delete this user?");
+    if (confirm) {
+      const asyncAction = async () => {
+        const res = await userDelete(user!.id);
+        if (res.success) {
+          location.reload();
+          return true;
+        } else if (res.error) {
+          throw res.error;
+        }
+      };
+
+      toast.promise(asyncAction(), {
+        loading: "Deleting...",
+        error: (error) => {
+          return `${error.message}`;
+        },
+      });
+    }
+  };
+
+  if (isError) {
+    if ((error as any)?.status === 404) {
+      return <p>User not found.</p>;
+    }
+
+    return <p>An error occurred</p>;
+  }
+
   return (
     <div>
       {data && !isLoading && (
@@ -168,6 +202,13 @@ const Details = ({ id }: { id: string }) => {
               </p>
             </div>
             <div className="flex gap-2">
+              <Button
+                onClick={handleDelete}
+                variant={"destructive"}
+                className={`!rounded-button flex items-center whitespace-nowrap cursor-pointer`}
+              >
+                Delete
+              </Button>
               <SuspensionModal id={user!.id} currentStatus={user!.isBanned}>
                 <Button
                   variant={user!.isBanned ? "success" : "destructive"}

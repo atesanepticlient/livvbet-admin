@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { apiSlice } from "./apiSlice";
-import { AgentsDataOutput, AgentsUpdateInput } from "@/types/api";
+import {  AgentsUpdateInput } from "@/types/api";
 
 const agentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,20 +22,32 @@ const agentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["agent"],
     }),
-    fetchAgent: builder.query<
-      { payload: Prisma.agentGetPayload<{ include: { agent: true } }> },
-      { id: string }
-    >({
+    fetchAgent: builder.query<any, { id: string }>({
       query: ({ id }) => ({
         url: `api/agents/${id}`,
         method: "GET",
       }),
       providesTags: ["agent"],
     }),
-
-    fetchAgents: builder.query<AgentsDataOutput, void>({
-      query: () => ({
+    banAgent: builder.mutation({
+      query: (id) => ({
+        url: `/api/agents/${id}/ban`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["agent"],
+    }),
+    deleteAgent: builder.mutation({
+      query: (id) => ({
+        url: `/api/agents/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["agent"],
+    }),
+    fetchAgents: builder.query<any, any>({
+      query: ({ search, isActive }) => ({
         url: `api/agents`,
+        params: { search, isActive },
+
         method: "GET",
       }),
     }),
@@ -67,6 +79,19 @@ const agentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["agentPayouts"],
     }),
+
+    getPendingAgents: builder.query({
+      query: () => "/api/agents/pending",
+      providesTags: ["agent"],
+    }),
+    verifyAgent: builder.mutation({
+      query: ({ id, action }) => ({
+        url: `/api/agents/${id}/verify`,
+        method: "PATCH",
+        body: { action },
+      }),
+      invalidatesTags: ["agent"],
+    }),
   }),
 });
 
@@ -79,4 +104,8 @@ export const {
   useDepositToWalletMutation,
   useGetAgentsPayoutRequestsQuery,
   useUpdateWithdrawalRequestStatusMutation,
+  useBanAgentMutation,
+  useDeleteAgentMutation,
+  useGetPendingAgentsQuery,
+  useVerifyAgentMutation,
 } = agentApiSlice;
